@@ -1,0 +1,5 @@
+>>> from functools import cmp_to_key
+>>> sorted(items, key=cmp_to_key(cmp))
+[(6, 1), (1, 2), (1,3), (2, 2)]
+>>> sorted(items, key=cmp_to_key(cmp), reverse=True)
+[(2, 2), (1, 2), (6, 1)]
