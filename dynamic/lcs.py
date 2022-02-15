@@ -1,31 +1,29 @@
-s1 = 'abcd'
-s2 = 'aebd'
+def LCS(A, B, i, j, stack, m):
+    if i == len(A) or j == len(B):
+        return 0
+    elif A[i] == B[j]:
+        stack.append(A[i])
 
-dp = []
-
-for i in range(len(s2)+1):
-    arr = [0]*(len(s1)+1)
-    dp.append(arr)
-
-s1 += '_'
-s2 += '_'
-
-result = ''
-
-for row in reversed(range(len(dp))):
-    for col in reversed(range(len(dp[0]))):
-        
-        if row == len(dp) - 1 or col == len(dp) - 1:
-            dp[row][col] = 0
+        if f"{i+1}{j+1}" in m:
+            return m[f"{i+1}{j+1}"]
         else:
-            if s2[row] != s1[col]:
-                dp[row][col] = max(
-                    dp[row+1][col],
-                    dp[row][col+1],
-                )
-            else:
-                dp[row][col] = dp[row+1][col+1] + 1
+            m[f"{i+1}{j+1}"] = 1 + LCS(A, B, i + 1, j + 1, stack, m)
+            return m[f"{i+1}{j+1}"]
+    else:
+        if f"{i+1}{j}" not in m:
+            m[f"{i+1}{j}"] = LCS(A, B, i + 1, j, stack, m)
+
+        if f"{i}{j+1}" not in m:
+            m[f"{i}{j+1}"] = LCS(A, B, i, j + 1, stack, m)
+
+        return max(m[f"{i+1}{j}"], m[f"{i}{j+1}"])
 
 
-for row in dp:
-    print(row)
+stack = []
+
+A = "abcdefghij"
+B = "cdgi"
+
+print(LCS(A, B, 0, 0, stack, {}))
+
+print("".join(stack))
